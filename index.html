@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>A Workshop for Better Thinking — Your Decisions</title>
+<meta name="theme-color" content="#111111">
+<meta name="robots" content="noindex, nofollow, noarchive">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#111;--soft:#8a8a8a;--line:#e0ddd6;--paper:#fff;--sand:#F4F1EA;
+--red:#D62828;--blue:#0B5FCE;--green:#1E8F4E;--tap:56px}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0;background:var(--sand);color:var(--ink);
+font-family:Archivo,-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif;
+font-size:17px;line-height:1.5;-webkit-text-size-adjust:100%}
+.mono{font-family:"IBM Plex Mono",ui-monospace,Menlo,monospace}
+#bar{position:fixed;top:0;left:0;right:0;height:calc(52px + env(safe-area-inset-top));
+padding-top:env(safe-area-inset-top);background:var(--paper);border-bottom:1px solid var(--line);
+display:flex;align-items:center;gap:12px;padding-left:16px;padding-right:16px;z-index:20}
+#prog{flex:1;height:6px;background:var(--line);border-radius:3px;overflow:hidden}
+#pf{height:100%;width:0;background:var(--ink);transition:width .35s cubic-bezier(.4,0,.2,1)}
+#cnt{font-size:12px;letter-spacing:.1em;color:var(--soft);white-space:nowrap}
+main{padding:calc(72px + env(safe-area-inset-top)) 18px calc(150px + env(safe-area-inset-bottom));
+max-width:640px;margin:0 auto}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:22px 20px;
+margin-bottom:16px;box-shadow:0 1px 2px rgba(0,0,0,.04)}
+.part{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--soft);margin-bottom:10px}
+.aqid{display:inline-block;background:var(--ink);color:#fff;padding:4px 11px;border-radius:6px;
+font-size:13px;letter-spacing:.08em;font-weight:600;margin-bottom:14px}
+.tnum{font-size:12px;letter-spacing:.14em;color:var(--soft);margin-bottom:3px}
+h1{font-size:27px;line-height:1.15;font-weight:800;letter-spacing:-.02em;margin:0 0 6px}
+h2{font-size:21px;line-height:1.2;font-weight:800;letter-spacing:-.01em;margin:0 0 12px}
+.mx{font-size:19px;font-weight:700;line-height:1.32;margin:6px 0 14px}
+p{margin:0 0 11px}
+.struck{color:#a5a5a5;text-decoration:line-through;text-decoration-color:var(--red);text-decoration-thickness:2px}
+h1.struck,.mx.struck{text-decoration-thickness:3px}
+.ins{color:var(--blue);border-bottom:3px solid var(--blue);padding-bottom:2px;display:inline-block}
+.lbl{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--soft);margin:16px 0 4px}
+.why{background:var(--sand);border-radius:10px;padding:15px 16px;font-size:15px;line-height:1.5;margin:16px 0 0}
+.surv{border:1.5px solid var(--green);border-radius:10px;padding:13px 15px;margin-top:14px}
+.surv .lbl{color:var(--green);margin-top:0}
+table{width:100%;border-collapse:collapse;font-size:15px;margin:6px 0 0}
+td{padding:9px 4px;border-bottom:1px solid var(--line);vertical-align:top}
+td:first-child{font-weight:700;width:64px}
+td.n{text-align:right;width:44px;color:var(--soft)}
+tr:last-child td{border-bottom:none}
+.ch{color:var(--red);font-weight:800}
+.opts{margin-top:18px}
+.opt{display:flex;align-items:center;gap:13px;width:100%;min-height:var(--tap);
+background:var(--paper);border:2px solid var(--line);border-radius:11px;padding:13px 15px;
+margin-bottom:10px;font:inherit;font-size:16.5px;font-weight:600;text-align:left;color:var(--ink);cursor:pointer}
+.opt .bx{flex:0 0 26px;height:26px;border:2.5px solid var(--ink);border-radius:6px;position:relative}
+.opt[aria-pressed=true]{border-color:var(--ink);background:#fbf9f4}
+.opt[aria-pressed=true] .bx{background:var(--ink)}
+.opt[aria-pressed=true] .bx::after{content:"";position:absolute;left:7px;top:2px;width:7px;height:14px;
+border:solid #fff;border-width:0 3px 3px 0;transform:rotate(45deg)}
+textarea{width:100%;min-height:88px;margin-top:6px;padding:13px;font:inherit;font-size:16.5px;
+border:2px solid var(--line);border-radius:11px;background:var(--paper);color:var(--ink);resize:vertical}
+textarea:focus,.opt:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+.hero{background:var(--ink);color:#fff;border:none;padding:32px 24px}
+.hero .part{color:#9a9a9a}.hero h1{font-size:33px;margin-bottom:14px}
+.hero .rule{height:4px;background:#fff;width:96px;margin:18px 0}
+.hero p{color:#ddd;font-size:16px}
+.step{display:flex;gap:14px;margin-bottom:15px;font-size:16px}
+.sn{flex:0 0 30px;height:30px;border-radius:50%;background:var(--ink);color:#fff;font-weight:800;
+display:flex;align-items:center;justify-content:center;font-size:15px}
+#foot{position:fixed;left:0;right:0;bottom:0;background:var(--paper);border-top:1px solid var(--line);
+padding:12px 16px calc(12px + env(safe-area-inset-bottom));display:flex;gap:10px;z-index:20}
+button.nav{flex:1;min-height:var(--tap);border-radius:11px;font:inherit;font-size:17px;font-weight:700;
+border:2px solid var(--ink);background:var(--paper);color:var(--ink);cursor:pointer}
+button.nav.pri{background:var(--ink);color:#fff}
+button.nav:disabled{opacity:.32;cursor:default}
+button.big{width:100%;min-height:60px;border-radius:12px;font:inherit;font-size:18px;font-weight:800;
+border:2px solid var(--ink);background:var(--ink);color:#fff;margin-bottom:11px;cursor:pointer}
+button.big.alt{background:var(--paper);color:var(--ink)}
+.saved{font-size:13px;color:var(--soft);text-align:center;padding:6px 0 0}
+.warn{border:2px solid var(--red);border-radius:10px;padding:14px 15px;font-size:15px;margin-top:14px}
+.warn b{color:var(--red)}
+#out{width:100%;min-height:190px;font-family:"IBM Plex Mono",monospace;font-size:12.5px;margin-top:12px}
+@media (prefers-color-scheme:dark){
+:root{--ink:#f2efe9;--soft:#8d8d8d;--line:#3a3833;--paper:#1c1b19;--sand:#131211;
+--red:#ff6b5e;--blue:#6ba7ff;--green:#4cc47e}
+.hero{background:#000}.opt[aria-pressed=true]{background:#262421}
+.sn,.aqid{background:var(--ink);color:#131211}
+.opt[aria-pressed=true] .bx::after{border-color:#131211}}
+</style></head><body>
+<div id="bar"><div id="prog"><div id="pf"></div></div><div id="cnt" class="mono">&nbsp;</div></div>
+<main id="app"></main>
+<div id="foot"><button class="nav" id="back">Back</button><button class="nav pri" id="next">Start</button></div>
+<script>
+const Q=[{"id": "AQ1", "kind": "cut", "part": "Four tools proposed for cutting", "tool": "5.11", "title": "A Vision Without Execution Is Never Seen", "maxim": "A vision without execution is never seen.", "body": ["Ideas matter. Imagination matters. Vision matters. But the world only experiences what gets built.", "Execution is the bridge between what could exist and what actually does."], "why": "Both carry <em>“A vision without execution is never seen.”</em> 7.11 says it better and closes on <em>Put reality in a position to answer you.</em>", "survivor": {"num": "7.11", "title": "Build What Does Not Yet Exist", "maxim": "A vision without execution is never seen."}, "opts": ["Accept the cut", "Keep it — I’ll write a new maxim"], "writeLabel": "New maxim, if you’re keeping it"}, {"id": "AQ2", "kind": "cut", "part": "Four tools proposed for cutting", "tool": "6.09", "title": "Discipline Survives Motivation", "maxim": "Talent defines what you could become. Motivation gets you started. Discipline determines whether you get there.", "body": ["Talent is potential. Motivation is temporary energy. Discipline carries you through boredom, setbacks, and days when you simply do not feel like doing the work.", "Build habits that protect what matters from the version of you who would rather do something easier."], "why": "Both carry the talent / motivation / discipline line. 2.05 makes the argument in 100 words; this is the same argument in 60.", "survivor": {"num": "2.05", "title": "Discipline Determines Whether You Get There", "maxim": "Talent defines what you could become. Motivation gets you started. Discipline determines whether you get there."}, "opts": ["Accept the cut", "Keep it — I’ll write a new maxim"], "writeLabel": "New maxim, if you’re keeping it"}, {"id": "AQ3", "kind": "cut", "part": "Four tools proposed for cutting", "tool": "6.15", "title": "Live Fantasy and Truth at the Same Time", "maxim": "Live fantasy and truth at the same time.", "body": ["Reality deserves authority. Imagination deserves room.", "Fantasy lets us picture what does not yet exist. Truth tells us what must be overcome to build it."], "why": "Both carry <em>“Live fantasy and truth at the same time.”</em> This tool’s own cross-link already sends the reader to Section 7.", "survivor": {"num": "7.05", "title": "Live Fantasy and Truth Together", "maxim": "Live fantasy and truth at the same time."}, "opts": ["Accept the cut", "Keep it — I’ll write a new maxim"], "writeLabel": "New maxim, if you’re keeping it"}, {"id": "AQ4", "kind": "cut", "part": "Four tools proposed for cutting", "tool": "9.08", "title": "Build Force Multipliers", "maxim": "Those who make things happen are a force. Those who lead them are force multipliers.", "body": ["A force can accomplish a great deal.", "A force multiplier creates alignment, direction, confidence, resources, and momentum so many capable people can accomplish what no single person could.", "The goal of leadership is not to remain the strongest person in the room. It is to increase the strength of the room.", "If you are a force, invest the time to become a force multiplier. Then teach others to do the same."], "why": "Nearly word for word with 4.02, plus two sentences. Its one new idea is added to 4.02 instead — see AQ7.", "survivor": {"num": "4.02", "title": "Force Multipliers", "maxim": "Those who make things happen are a force. Those who lead them are force multipliers."}, "opts": ["Accept the cut", "Keep it — I’ll write a new maxim"], "writeLabel": "New maxim, if you’re keeping it"}, {"id": "AQ5", "kind": "rewrite", "part": "Two tools that stay, retitled", "tool": "3.01", "title": "Take People as They Come", "maxim": "Accept everyone as they come, starting with yourself.", "newTitle": "Let Lions Be Lions", "newMaxim": "Lions do not make good bears.", "body": ["People are not raw material for us to remake into whatever would be most convenient.", "Acceptance does not require agreement. It means seeing a person as they actually are before deciding what place, if any, they should have in your life.", "Let lions be lions, tigers be tigers, and bears be bears. Lions do not make good bears."], "why": "This and 2.01 both carried <em>“Accept everyone as they come, starting with yourself.”</em> They’re genuinely two tools, so both stay — only the shared line goes. The replacement is <strong>the last sentence of this tool</strong>, moved to the top.", "opts": ["Accept", "Reject"], "writeLabel": "Your own title and line, if you prefer"}, {"id": "AQ6", "kind": "rewrite", "part": "Two tools that stay, retitled", "tool": "3.04", "title": "Stand on My Shoulders, Not My Head", "maxim": "Feel free to stand on my shoulders, but never stand on my head.", "newTitle": "Support Is Not Permission", "newMaxim": "Support is not permission for exploitation.", "body": ["Helping someone rise is one of the privileges of experience.", "Share what you know. Open doors. Let someone use your experience as elevation.", "But support is not permission for exploitation. Good relationships create elevation without domination."], "why": "This and 9.02 both carried the shoulders line. It stays with <strong>9.02, in Legacy</strong> — a man saying it to a successor. This tool is about boundaries, and already contains its own better line.", "opts": ["Accept", "Reject"], "writeLabel": "Your own title and line, if you prefer"}, {"id": "AQ7", "kind": "add", "part": "One sentence added", "tool": "4.02", "title": "Force Multipliers", "maxim": "Those who make things happen are a force. Those who lead them are force multipliers.", "body": ["A force can accomplish a great deal. A force multiplier creates alignment, direction, resources, confidence, and momentum so many capable people can accomplish what no single person could accomplish alone.", "The goal is not to remain the strongest person in the room. It is to increase the strength of the room."], "addLine": "If you are a force, invest the time to become a force multiplier. Then teach someone else to do the same.", "why": "This is <strong>the one place a sentence was written for you</strong>, and only because 9.08 is being cut. 9.08 ended on succession and 4.02 did not, so that idea is carried here rather than lost. <strong>Rewrite it in your words if it isn’t right.</strong>", "opts": ["Accept", "Reject"], "writeLabel": "Say it your way"}, {"id": "AQ8", "kind": "maxim", "part": "Five tools that printed the same line twice", "tool": "1.08", "title": "Remain Teachable", "maxim": "Remain teachable.", "newMaxim": "The moment you believe there is nothing left to learn, your education quietly stops.", "why": "The title <em>Remain Teachable</em> and the maxim were the same words — on a card that prints twice, an inch apart, and reads as a misprint. The replacement is lifted from this tool’s own body copy.", "opts": ["Accept", "Reject"], "writeLabel": "Your own line, if you prefer"}, {"id": "AQ9", "kind": "maxim", "part": "Five tools that printed the same line twice", "tool": "5.02", "title": "Plans Don't Work Unless People Do", "maxim": "Plans don't work unless people do.", "newMaxim": "A beautiful plan without disciplined execution is decoration.", "why": "The title <em>Plans Don't Work Unless People Do</em> and the maxim were the same words — on a card that prints twice, an inch apart, and reads as a misprint. The replacement is lifted from this tool’s own body copy.", "opts": ["Accept", "Reject"], "writeLabel": "Your own line, if you prefer"}, {"id": "AQ10", "kind": "maxim", "part": "Five tools that printed the same line twice", "tool": "6.11", "title": "Mental Health Is Real", "maxim": "Mental health is real.", "newMaxim": "A mind can carry strain just as a body can carry injury.", "why": "The title <em>Mental Health Is Real</em> and the maxim were the same words — on a card that prints twice, an inch apart, and reads as a misprint. The replacement is lifted from this tool’s own body copy.", "opts": ["Accept", "Reject"], "writeLabel": "Your own line, if you prefer"}, {"id": "AQ11", "kind": "maxim", "part": "Five tools that printed the same line twice", "tool": "7.04", "title": "Create Your Own Puzzles", "maxim": "Create your own puzzles.", "newMaxim": "Do not wait for someone else to hand you the interesting question.", "why": "The title <em>Create Your Own Puzzles</em> and the maxim were the same words — on a card that prints twice, an inch apart, and reads as a misprint. The replacement is lifted from this tool’s own body copy.", "opts": ["Accept", "Reject"], "writeLabel": "Your own line, if you prefer"}, {"id": "AQ12", "kind": "maxim", "part": "Five tools that printed the same line twice", "tool": "8.09", "title": "Great Communities Are Built on Infrastructure", "maxim": "Great communities are built on infrastructure.", "newMaxim": "Infrastructure is easy to ignore when it works and impossible to ignore when it fails.", "why": "The title <em>Great Communities Are Built on Infrastructure</em> and the maxim were the same words — on a card that prints twice, an inch apart, and reads as a misprint. The replacement is lifted from this tool’s own body copy.", "opts": ["Accept", "Reject"], "writeLabel": "Your own line, if you prefer"}, {"id": "AQ13a", "kind": "links", "part": "Ten tools send the reader nowhere", "head": "Four point at a page that was never written", "rows": [["1.09", "Workshop Reflection"], ["7.12", "Workshop Reflection"], ["8.13", "Workshop Reflection"], ["9.12", "A Final Thought"]], "why": "You planned a closing reflection and a final thought, and four tools already hand off to them. They were never written.", "opts": ["I’ll write them", "Point these four at real tools instead"], "writeLabel": "If you’ll write them, roughly what are they?"}, {"id": "AQ13b", "kind": "links", "part": "Ten tools send the reader nowhere", "head": "Two point at tools that aren’t in the book", "rows": [["4.07", "Willful Ignorance"], ["9.06", "The World Needs Capable People at Full Size"]], "why": "Neither title appears anywhere in the manuscript. Either they were cut and the links never updated, or you renamed them.", "opts": ["Cut — delete these two links", "Renamed — new titles below"], "writeLabel": "If renamed, what are they called now?"}, {"id": "AQ13c", "kind": "links", "part": "Ten tools send the reader nowhere", "head": "Four hand off to a section instead of a tool", "rows": [["2.11", "Section 3"], ["3.13", "Section 4"], ["4.11", "Section 5"], ["5.13", "Section 6"]], "why": "<strong>This may be your best idea in the book, done four times out of nine.</strong> A section handing the reader to the next section is exactly the chain you were building. Right now it happens in four and not the other five, which reads as an accident.", "opts": ["Commit — add the missing five", "Drop it — point them at tools"], "writeLabel": "Notes"}, {"id": "AQ14", "kind": "count", "part": "The number on the cover", "counts": [["01 Seeing Clearly", 9, 9], ["02 Character", 11, 11], ["03 Relationships", 13, 13], ["04 Influence", 11, 11], ["05 Building", 13, 12], ["06 Living Well", 15, 13], ["07 Innovation", 12, 12], ["08 Stewardship", 13, 13], ["09 Legacy", 12, 11]], "why": "This number is in eight places — cover, title page, Architecture spread, box, card deck, print file and both websites. They all have to agree before anything is printed.", "opts": ["Accept 105", "Keep 109 — I’ll write replacements"], "writeLabel": "Notes"}, {"id": "A", "kind": "section2", "part": "Only you can decide", "why": "Character’s eleven tools run <strong>98–108 words</strong>. Every one of the five longest tools in the book is in Section Two; every one of the five shortest is in Living Well, at 13–20. An eight-fold spread on one template.<br><br>In Section Two you tend to make the argument twice — the claim, then the claim again with an example. <strong>Keeping whichever pass is more concrete and striking the other</strong> gets most tools to sixty words without rewriting a line.", "longest": [["2.04 When You Know Better, Do Better", 108], ["2.02 Integrity Without an Audience", 107], ["2.03 Accountability Is Ownership", 104], ["2.07 Pressure Is a Privilege", 101], ["2.11 Master Yourself First", 98]], "shortest": [["6.14 Get Lost in the Right Direction", 13], ["6.06 Purpose Has Pleasures", 17], ["6.05 Define Your Own Fun", 19], ["6.13 Live Exuberantly Without Ruining Your Future", 19], ["6.02 One More Day Is One Less Day", 20]], "opts": ["Cut Section Two to 40–70 words", "Leave it — it’s meant to be longer"], "writeLabel": "Notes"}, {"id": "B", "kind": "attrib", "part": "Only you can decide", "rows": [["1.03", "If the facts disagree with the theory, the theory is wrong", "Richard Feynman"], ["2.04", "When you know better, do better", "Maya Angelou"], ["2.07", "Pressure is a privilege", "Billie Jean King"]], "why": "All three run unattributed and <strong>need crediting</strong> — a credits page at the back is simplest. The only thing needed from you is <strong>the rest of the list</strong>. There are almost certainly other lines that came from someone, and you’re the only one who’d know.", "opts": [], "writeLabel": "Other lines that came from someone, and who"}];
+const KEY="keck_ballot_v1_1";
+const MAILTO="michaelw@dx-dt.com";
+let ans={},i=0;
+try{ans=JSON.parse(localStorage.getItem(KEY)||"{}")}catch(e){ans={}}
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(ans))}catch(e){}};
+const esc=s=>String(s).replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));
+const N=Q.length+2;
+const app=document.getElementById("app"),pf=document.getElementById("pf"),cnt=document.getElementById("cnt");
+const bk=document.getElementById("back"),nx=document.getElementById("next");
+function tbl(rows){return "<table>"+rows.map(r=>"<tr>"+r.map(c=>
+  "<td class='"+(typeof c==="number"?"n":"")+"'>"+esc(c)+"</td>").join("")+"</tr>").join("")+"</table>"}
+function body(q){
+  const b=(q.body||[]).map(p=>"<p>"+esc(p)+"</p>").join("");
+  if(q.kind==="cut")return "<div class='tnum mono'>Tool "+q.tool+"</div><h1 class='struck'>"+esc(q.title)+"</h1>"+
+    "<p class='mx struck'>"+esc(q.maxim)+"</p>"+b.replace(/<p>/g,"<p class='struck'>")+
+    "<div class='surv'><div class='lbl'>The tool that stays</div><b>Tool "+q.survivor.num+" &middot; "+esc(q.survivor.title)+
+    "</b><p class='mx' style='font-size:16px;margin:6px 0 0'>"+esc(q.survivor.maxim)+"</p></div>";
+  if(q.kind==="rewrite")return "<div class='tnum mono'>Tool "+q.tool+"</div><h1><span class='struck'>"+esc(q.title)+
+    "</span><br><span class='ins'>"+esc(q.newTitle)+"</span></h1><p class='mx struck'>"+esc(q.maxim)+
+    "</p><p class='mx'><span class='ins'>"+esc(q.newMaxim)+"</span></p><div class='lbl'>Unchanged below</div>"+b;
+  if(q.kind==="add")return "<div class='tnum mono'>Tool "+q.tool+"</div><h1>"+esc(q.title)+"</h1><p class='mx'>"+
+    esc(q.maxim)+"</p>"+b+"<p class='mx' style='font-size:17px'><span class='ins'>"+esc(q.addLine)+"</span></p>";
+  if(q.kind==="maxim")return "<div class='tnum mono'>Tool "+q.tool+"</div><h1>"+esc(q.title)+"</h1>"+
+    "<div class='lbl'>The line at the top</div><p class='mx struck'>"+esc(q.maxim)+
+    "</p><p class='mx'><span class='ins'>"+esc(q.newMaxim)+"</span></p>";
+  if(q.kind==="links")return "<h2>"+esc(q.head)+"</h2>"+tbl(q.rows);
+  if(q.kind==="count"){
+    let r="<h2>109 becomes 105</h2><table>";
+    q.counts.forEach(c=>{r+="<tr><td style='width:auto;font-weight:600'>"+esc(c[0])+"</td><td class='n'>"+c[1]+
+      "</td><td class='n"+(c[1]!==c[2]?" ch":"")+"'>"+c[2]+"</td></tr>"});
+    return r+"<tr><td style='width:auto;font-weight:800'>Total</td><td class='n'>109</td><td class='n ch'>105</td></tr></table>";}
+  if(q.kind==="section2")return "<h2>Section Two is a different book</h2><div class='lbl'>Longest five &mdash; all Section 2</div>"+
+    tbl(q.longest)+"<div class='lbl'>Shortest five &mdash; all Section 6</div>"+tbl(q.shortest);
+  if(q.kind==="attrib")return "<h2>Three lines belong to other people</h2><table>"+
+    q.rows.map(r=>"<tr><td>"+r[0]+"</td><td style='width:auto'><em>"+esc(r[1])+"</em><br><b>"+esc(r[2])+"</b></td></tr>").join("")+"</table>";
+  return "";
+}
+function render(){
+  window.scrollTo(0,0);
+  pf.style.width=(i/(N-1)*100)+"%";
+  bk.disabled=i===0; nx.disabled=false;
+  if(i===0){
+    cnt.innerHTML="&nbsp;";
+    app.innerHTML="<div class='card hero'><div class='part mono'>Marked Proof &middot; Version 1.1</div>"+
+      "<h1>A Workshop for Better Thinking</h1><div class='rule'></div>"+
+      "<p>Dan &mdash; this is not the book. It is only the <b>"+Q.length+" things that changed</b>, one per screen. "+
+      "Everything you do not touch stays exactly as you wrote it.</p>"+
+      "<p style='color:#fff;border-top:1px solid #444;padding-top:14px;margin-top:16px'><b>There is a paper copy too.</b> "+
+      "Same seventeen decisions either way. Use whichever you feel like &mdash; just don't do both.</p></div>"+
+      "<div class='card'><div class='part mono'>How this works</div>"+
+      "<div class='step'><div class='sn'>1</div><div>Text with a <span class='struck'>line through it</span> is proposed for cutting. Text <span class='ins'>underlined in blue</span> is proposed as new. Nothing has been done yet.</div></div>"+
+      "<div class='step'><div class='sn'>2</div><div>Tap a box. Change your mind any time &mdash; tap it again to clear it.</div></div>"+
+      "<div class='step'><div class='sn'>3</div><div>Type underneath if you want to say it your own way. Always optional.</div></div>"+
+      "<div class='step'><div class='sn'>4</div><div>At the end, one button sends the whole thing to Michael.</div></div>"+
+      "<div class='why'><b>Your answers save on this phone as you go.</b> Close it, come back tomorrow, nothing is lost.</div>"+
+      "<div class='why' style='margin-top:10px'><b>Not one word of your voice was rewritten.</b> Where a new line is proposed it is a sentence <b>already in that tool</b>, moved to the top. There is one exception and it is flagged when you reach it.</div></div>";
+    nx.textContent="Start"; return;
+  }
+  if(i===N-1)return done();
+  const q=Q[i-1], a=ans[q.id]||{};
+  cnt.textContent=i+" / "+Q.length;
+  let h="<div class='card'><div class='part mono'>"+esc(q.part)+"</div><span class='aqid mono'>"+q.id+"</span>"+
+    body(q)+"<div class='why'><b>Why.</b> "+q.why+"</div><div class='opts'>";
+  (q.opts||[]).forEach((o,k)=>{h+="<button class='opt' data-k='"+k+"' aria-pressed='"+(a.choice===k)+"'><span class='bx'></span><span>"+o+"</span></button>"});
+  h+="</div>";
+  if(q.writeLabel)h+="<div class='lbl'>"+esc(q.writeLabel)+"</div><textarea id='ta' placeholder='Optional'>"+esc(a.note||"")+"</textarea>";
+  app.innerHTML=h+"</div>";
+  app.querySelectorAll(".opt").forEach(b=>b.onclick=()=>{
+    const k=+b.dataset.k, cur=ans[q.id]||{};
+    cur.choice=(cur.choice===k?null:k); ans[q.id]=cur; save();
+    app.querySelectorAll(".opt").forEach(x=>x.setAttribute("aria-pressed",(+x.dataset.k)===cur.choice));
+  });
+  const ta=document.getElementById("ta");
+  if(ta)ta.oninput=()=>{const c=ans[q.id]||{};c.note=ta.value;ans[q.id]=c;save()};
+  nx.textContent=i===Q.length?"Finish":"Next";
+}
+function payload(){
+  const L=["A WORKSHOP FOR BETTER THINKING — DAN'S DECISIONS","version: 1.1","date: "+new Date().toISOString().slice(0,10),""];
+  Q.forEach(q=>{const a=ans[q.id]||{};
+    L.push("["+q.id+"] "+(q.tool?"Tool "+q.tool+" — "+q.title:(q.head||q.part)));
+    L.push("  decision: "+(q.opts&&q.opts.length?(a.choice==null?"NOT ANSWERED":q.opts[a.choice]):"(written answer only)"));
+    if(a.note&&a.note.trim())L.push("  note: "+a.note.trim().replace(/\n/g,"\n        "));
+    L.push("");});
+  const dec=Q.filter(q=>q.opts&&q.opts.length);
+  L.push("unanswered: "+dec.filter(q=>(ans[q.id]||{}).choice==null).length+" of "+dec.length);
+  return L.join("\n");
+}
+function done(){
+  cnt.textContent="Done";
+  const dec=Q.filter(q=>q.opts&&q.opts.length), un=dec.filter(q=>(ans[q.id]||{}).choice==null);
+  app.innerHTML="<div class='card hero'><div class='part mono'>Finished</div><h1>That is all "+Q.length+".</h1>"+
+    "<div class='rule'></div><p>One button and it goes to Michael. Nothing is printed until you have seen the corrections you asked for.</p></div>"+
+    "<div class='card'>"+
+    (un.length?"<div class='warn'><b>"+un.length+" still blank:</b> "+un.map(q=>q.id).join(", ")+
+      "<br>Send anyway if you like. Blank means the question stays open and gets asked again. It is never taken as a yes.</div>":
+      "<div class='why'><b>All "+dec.length+" answered.</b></div>")+
+    "<div style='margin-top:16px'><button class='big' id='mail'>Send to Michael</button>"+
+    "<button class='big alt' id='copy'>Copy answers instead</button>"+
+    "<div class='saved'>If the mail app does not open, tap Copy and paste it into a text message.</div>"+
+    "<textarea id='out' readonly>"+esc(payload())+"</textarea></div></div>";
+  document.getElementById("mail").onclick=()=>{
+    location.href="mailto:"+MAILTO+"?subject="+encodeURIComponent("Workshop for Better Thinking — my decisions (v1.1)")+
+      "&body="+encodeURIComponent(payload());};
+  document.getElementById("copy").onclick=async e=>{
+    try{await navigator.clipboard.writeText(payload())}
+    catch(_){const o=document.getElementById("out");o.select();document.execCommand("copy")}
+    e.target.textContent="Copied ✓";setTimeout(()=>e.target.textContent="Copy answers instead",2200);};
+  nx.textContent="Done";nx.disabled=true;
+}
+bk.onclick=()=>{if(i>0){i--;render()}};
+nx.onclick=()=>{if(i<N-1){i++;render()}};
+render();
+</script></body></html>
